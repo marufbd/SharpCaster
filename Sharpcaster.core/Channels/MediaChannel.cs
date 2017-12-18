@@ -29,7 +29,7 @@ namespace Sharpcaster.Core.Channels
             {
                 return (await SendAsync<MediaStatusMessage>(message, application.TransportId)).Status?.FirstOrDefault();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Status = null;
                 throw;

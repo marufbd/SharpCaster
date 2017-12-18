@@ -20,16 +20,20 @@ using System.Reflection;
 using Sharpcaster.Core.Models.ChromecastStatus;
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Sharpcaster.Core.Exceptions;
 using Sharpcaster.Logging;
 using Sharpcaster.Core.Models.Media;
 using Sharpcaster.Core.Messages.Media;
+using IMessageWithId = Sharpcaster.Core.Interfaces.IMessageWithId;
 
 namespace Sharpcaster
 {
     public class ChromecastClient : IChromecastClient
     {
+        //private const int RECEIVE_TIMEOUT = 30000;
         private const int RECEIVE_TIMEOUT = 30000;
         private static readonly object LockObject = new object();
+        private string _receiverAppId = "CC1AD845";
         private TcpClient _client;
         private Stream _stream;
         private ChromecastReceiver _receiver;
@@ -102,13 +106,27 @@ namespace Sharpcaster
             return await GetChannel<IReceiverChannel>().GetChromecastStatusAsync();
         }
 
+        private bool _stopReceive;
+        private bool _stoppedReceive;
+
+        private void StopReceive()
+        {
+            _stopReceive = true;
+            while (_stoppedReceive)
+            {
+                
+            }
+        }
+
         private void Receive()
         {
+            _stoppedReceive = false;
+            _stopReceive = false;
             Task.Run(async () =>
             {
                 try
                 {
-                    while (true)
+                    while (!_stopReceive)
                     {
                         //First 4 bytes contains the length of the message
                         var buffer = await _stream.ReadAsync(4);
@@ -146,6 +164,8 @@ namespace Sharpcaster
                             }
                         }
                     }
+
+                    _stoppedReceive = true;
                 }
                 catch (Exception)
                 {
@@ -177,8 +197,6 @@ namespace Sharpcaster
             return Task.FromResult(true);
             //throw new NotImplementedException();
         }
-
-
 
         public void Disconnect()
         {
@@ -222,7 +240,7 @@ namespace Sharpcaster
             };
         }
 
-        public async Task<TResponse> SendAsync<TResponse>(string ns, IMessageWithId message, string destinationId) where TResponse : IMessageWithId
+        public async Task<TResponse> SendAsync<TResponse>(string ns, IMessageWithId message, string destinationId) where TResponse:IMessageWithId
         {
             var taskCompletionSource = new TaskCompletionSource<TResponse>();
             WaitingTasks[message.RequestId] = taskCompletionSource;
@@ -230,9 +248,21 @@ namespace Sharpcaster
             return await taskCompletionSource.Task.TimeoutAfter(RECEIVE_TIMEOUT);
         }
 
-        public Task DisconnectAsync()
+        public async Task ReconnectAsync()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            Disconnect();
+            StopReceive();            
+            await ConnectChromecast(_receiver);
+            await LaunchApplicationAsync(_receiverAppId);
+
+            foreach (var task in WaitingTasks)
+            {
+                var tcs = task.Value;
+                var tcsType = tcs.GetType();
+                (tcsType.GetMethod("SetException", new Type[] { typeof(Exception) })).Invoke(tcs, new object[] { new ReceiverDisconnectedException() });
+            }
+            WaitingTasks.Clear();
         }
 
         /// <summary>
@@ -247,6 +277,7 @@ namespace Sharpcaster
 
         public async Task<ChromecastStatus> LaunchApplicationAsync(string applicationId, bool joinExistingApplicationSession = true)
         {
+            _receiverAppId = applicationId;
             if (joinExistingApplicationSession)
             {
                 var status = GetChromecastStatus();

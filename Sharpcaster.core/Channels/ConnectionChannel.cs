@@ -42,7 +42,7 @@ namespace Sharpcaster.Core.Channels
         {
             if (message is CloseMessage)
             {
-                await Client.DisconnectAsync();
+                await Client.ReconnectAsync();
             }
             await base.OnMessageReceivedAsync(message);
         }

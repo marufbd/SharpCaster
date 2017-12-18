@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using Sharpcaster.Core.Exceptions;
 
 namespace Sharpcaster.Core.Messages.Media
 {
@@ -13,7 +14,7 @@ namespace Sharpcaster.Core.Messages.Media
         [OnDeserializing]
         private void OnDeserializing(StreamingContext context)
         {
-            throw new Exception("Load failed");
+            throw new MediaLoadFailedException();
         }
     }
 }

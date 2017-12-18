@@ -12,7 +12,8 @@ namespace Sharpcaster.Core.Interfaces
         Task SendAsync(string ns, IMessage message, string destinationId);
         Task<ChromecastStatus> LaunchApplicationAsync(string applicationId, bool joinExistingApplicationSession = true);
         Task<TResponse> SendAsync<TResponse>(string ns, IMessageWithId message, string destinationId) where TResponse : IMessageWithId;
-        Task DisconnectAsync();
+        //Task<IMessageWithId> SendAsync(string ns, IMessageWithId message, string destinationId);
+        Task ReconnectAsync();
         ChromecastStatus GetChromecastStatus();
     }
 }
