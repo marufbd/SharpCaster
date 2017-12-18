@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="transparent_black_hex_8">#88000000</color>
+  <color name="soft_opaque">#30000000</color>
+  <color name="img_soft_opaque">#30FF0000</color>
+  <color name="img_full_opaque">#00000000</color>
+  <color name="black_opaque">#AA000000</color>
+  <color name="black">#000000</color>
+  <color name="white">#FFFFFF</color>
+  <color name="orange_transparent">#AAFADCA7</color>
+  <color name="orange">#FADCA7</color>
+  <color name="casting_media_control_bg">#2c393d</color>
+  <color name="yellow">#EEFF41</color>
+  <color name="light_gray">#D3D3D3</color>
+  <color name="light_yellow">#FFF6DB</color>
+  <color name="gray">#A9A9A9</color>
+  <color name="dark_gray">#A9A9A9</color>
+  <color name="blue_dark">#0099CC</color>
+  <color name="gray_line">#CCC</color>
+  <color name="red">#D00</color>
+
+  <color name="background_beige">#FFEDD4</color>
+  <color name="mopub_brown">#371F1F</color>
+
+  <!--Branding-->
+  <color name="window_background">#242424</color>
+  <color name="brand_yellow">#DEAD36</color>
+  <color name="primary_text">#EFEFEF</color>
+  <color name="colorActionBar">#000000</color>
+  <color name="itemBackground">#1a1a1a</color>
+  <color name="itemBackgroundWeb">#300000</color>
+</resources>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:coreUi="clr-namespace:CoreUi;assembly=CoreUi"
+             x:Class="CoreUi.ChromecastTestView">
+    <ContentPage.BindingContext>
+        <coreUi:ChromecastTestViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding Status}"
+                VerticalOptions="Center" 
+                HorizontalOptions="CenterAndExpand" />
+            <Button Text="Discover" Command="{Binding Discover}"/>
+            <Button Text="Cast" Command="{Binding CastTo}"/>
+            <Button Text="Stop" Command="{Binding Stop}"/>
+            <Button Text="Load Media" Command="{Binding LoadMediaCommand}"/>
+            <Button Text="Cast N Load Media" Command="{Binding CastAndLoad}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

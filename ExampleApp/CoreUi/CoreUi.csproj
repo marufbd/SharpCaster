@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
+    <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.10" />
+    <PackageReference Include="JWT" Version="3.1.1" />
+    <PackageReference Include="MR.Gestures" Version="1.5.0" />
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.121934" />
+    <PackageReference Include="Xamvvm.Forms" Version="1.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Sharpcaster.Discovery\Sharpcaster.Discovery.csproj" />
+    <ProjectReference Include="..\..\Sharpcaster\Sharpcaster.csproj" />
+  </ItemGroup>
+
+</Project>
