@@ -9,10 +9,7 @@ namespace CoreUi
 {
     public class ChromecastTestViewModel : BasePageModel
     {
-
-        private readonly string _appId = "1FB91ED9"; // BDCast custom streaming player
-        //private readonly string _appId = "CC1AD845"; //default android receiver app
-        //private readonly string _appId = "B3419EF5"; //sharpcaster demo
+        private readonly string _appId = "CC1AD845"; //default android receiver app        
         
 
         public void Init()
