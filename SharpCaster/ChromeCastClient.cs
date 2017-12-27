@@ -30,7 +30,6 @@ namespace Sharpcaster
 {
     public class ChromecastClient : IChromecastClient
     {
-        //private const int RECEIVE_TIMEOUT = 30000;
         private const int RECEIVE_TIMEOUT = 30000;
         private static readonly object LockObject = new object();
         private string _receiverAppId = "CC1AD845";
@@ -313,7 +312,10 @@ namespace Sharpcaster
 
         public MediaStatus GetMediaStatus()
         {
-            return GetStatuses().First(x => x.Key == GetChannel<MediaChannel>().Namespace).Value as MediaStatus;
+            var sts = GetStatuses();
+            var st = sts.First(x => x.Key == GetChannel<MediaChannel>().Namespace).Value as IEnumerable<MediaStatus>;
+
+            return st?.FirstOrDefault();
         }
     }
 }

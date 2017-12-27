@@ -12,15 +12,15 @@ namespace CoreUi
         private readonly string _appId = "CC1AD845"; //default android receiver app        
         
 
-        public void Init()
-        {
-            Status = Chromecast.Instance.IsConnected ? "Connected" : "Disconnected";
-        }
-
         public string Status
         {
             get => GetField<string>();
             set => SetField(value);
+        }
+
+        private void UpdateStatus()
+        {
+            Status = $"Connected: {Chromecast.Instance.IsConnected}, Casting: {Chromecast.Instance.IsCasting}, Device: {Chromecast.Instance.ConnectedDeviceName}, Media: {Chromecast.Instance.CastingMediaTitle}";
         }
 
         private async Task StartCast()
@@ -39,7 +39,7 @@ namespace CoreUi
                     try
                     {
                         await Chromecast.Instance.LaunchReceiver(selectedDeviceName, _appId);
-                        Status = $"Connected to: {selectedDeviceName}";
+                        UpdateStatus();
                     }
                     catch (Exception e)
                     {
@@ -74,9 +74,10 @@ namespace CoreUi
                     "https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/mp4/DesigningForGoogleCast.mp4",
                     "video/mp4",
                     "Designing For Google Cast",
-                    "ondemand"
+                    "ondemand",
+                    "https://images.techhive.com/images/article/2015/07/chromecast-100598088-large.jpg"
                 );
-                Status = "Playing media";
+                UpdateStatus();
             }
             catch (Exception e)
             {
@@ -100,7 +101,7 @@ namespace CoreUi
                 UserDialogs.Instance.Alert($"Error Stopping: {e.GetType().FullName}, Message: {e.Message}, Trace: {e.StackTrace}");
             }
 
-            Init();
+            UpdateStatus();
         });
 
         public ICommand CastAndLoad => new BaseCommand(async (arg) =>
@@ -116,7 +117,7 @@ namespace CoreUi
             try
             {                
                 await Chromecast.Instance.Discover(_appId);
-                Init();
+                UpdateStatus();
             }
             catch (Exception e)
             {
